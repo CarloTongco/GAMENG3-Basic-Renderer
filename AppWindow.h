@@ -24,6 +24,11 @@ public:
 	virtual void onDestroy() override;
 
 	void createGraphicsWindow();
+	void drawQuad(VertexBuffer* vb, VertexShader* vs, PixelShader* ps);
+	void drawTriangle(VertexBuffer* vb, VertexShader* vs, PixelShader* ps);
+	void drawQuad(VertexBuffer* vb, ConstantBuffer* cb, VertexShader* vs, PixelShader* ps);
+	void drawTriangle(VertexBuffer* vb, ConstantBuffer* cb, VertexShader* vs, PixelShader* ps);
+	float modifySpeed();
 
 private:
 
@@ -45,9 +50,11 @@ private:
 	unsigned long m_old_time = 0;
 	float ticks = 0.0f;
 	float speed = 0.0f;
+	float animSpeed = 0.5f;
+	float timer = 0.0f;
 	float m_delta_time = 0;
 	float m_angle = 0;
-	bool increasing = false;
+	bool speedup = false;
 
 };
 

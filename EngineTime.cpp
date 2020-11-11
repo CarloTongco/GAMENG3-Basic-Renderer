@@ -36,5 +36,5 @@ void EngineTime::LogFrameEnd()
 	sharedInstance->numFrames += 1;
 
 	//std::cout << "Frame update finished in " << sharedInstance->deltaTime << "\n";
-	std::cout << "Number of frames " << sharedInstance->numFrames << "\n";
+	//std::cout << "Number of frames " << sharedInstance->numFrames << "\n";
 }
