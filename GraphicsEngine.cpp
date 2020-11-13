@@ -103,11 +103,6 @@ DeviceContext* GraphicsEngine::getImmediateDeviceContext()
 	return this->m_imm_device_context;
 }
 
-IDXGIFactory* GraphicsEngine::getDirectXFactory()
-{
-	return this->m_dxgi_factory;
-}
-
 VertexBuffer* GraphicsEngine::createVertexBuffer()
 {
 	return new VertexBuffer();

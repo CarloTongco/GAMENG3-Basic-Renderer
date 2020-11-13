@@ -50,6 +50,7 @@ void AppWindow::onCreate()
 	RECT rc = this->getClientWindowRect();
 	m_swap_chain->init(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
+	//SLIDE 13
 	/*vertex list[] =
 	{
 		//X - Y - Z
@@ -59,6 +60,7 @@ void AppWindow::onCreate()
 		{ 0.5f,0.5f,0.0f,      0.88f,0.77f,0.0f,    1,1,1,  0,0,1 }
 	};*/
 
+	//SLIDE 14
 	vertex list[] =
 	{
 		//X - Y - Z
@@ -270,51 +272,3 @@ float AppWindow::modifySpeed()
 
 	return speed;
 }
-
-/*void AppWindow::createGraphicsWindow()
-{
-	GraphicsEngine::initialize();
-	GraphicsEngine* graphEngine = GraphicsEngine::getInstance();
-
-	this->m_swap_chain = GraphicsEngine::getInstance()->createSwapChain();
-	RECT rc = this->getClientWindowRect();
-	int width = rc.right - rc.left;
-	int height = rc.bottom - rc.top;
-
-	this->m_swap_chain->init(this->getWindowHandle(), width, height);
-	//this->m_swap_chain->init(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
-
-	void* shaderByteCode = nullptr;
-	size_t sizeShader = 0;
-
-	graphEngine->compileVertexShader(L"VertexShader.hlsl", "main", &shaderByteCode, &sizeShader);
-	this->m_vs = graphEngine->createVertexShader(shaderByteCode, sizeShader);
-
-	vertex triangleList[] = {
-		//X, Y, Z, R, G, B
-		{-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f},
-		{0.0f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f},
-		{0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f}
-	};
-
-	vertex quadList[] = {
-		//X, Y, Z
-		{-0.5f,-0.5f,0.0f,    -0.32f,-0.11f,0.0f,   0,0,0,  0,1,0 }, 
-		{-0.5f,0.5f,0.0f,     -0.11f,0.78f,0.0f,    1,1,0,  1,1,0 }, 
-		{ 0.5f,-0.5f,0.0f,     0.0f,-0.73f,0.0f,    0,0,1,  1,0,0 },
-		{ 0.0f,0.0f,0.0f,      0.88f,0.77f,0.0f,    1,1,1,  0,0,1 }
-	};
-
-	this->m_vb = GraphicsEngine::getInstance()->createVertexBuffer();
-	this->m_vb->load(triangleList, sizeof(vertex), ARRAYSIZE(quadList), shaderByteCode, sizeShader);
-	graphEngine->releaseCompiledShader(); 
-
-	graphEngine->compilePixelShader(L"PixelShader.hlsl", "main", &shaderByteCode, &sizeShader);
-	this->m_ps = graphEngine->createPixelShader(shaderByteCode, sizeShader);
-	graphEngine->releaseCompiledShader();
-
-	constant cbData = {};
-	cbData.m_angle = 0;
-	this->m_cb = GraphicsEngine::getInstance()->createConstantBuffer();
-	this->m_cb->load(&cbData, sizeof(constant));
-}*/

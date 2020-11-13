@@ -25,7 +25,6 @@ public:
 	static GraphicsEngine* getInstance();
 	static void initialize();
 	static void destroy();
-	IDXGIFactory* getDirectXFactory();
 	SwapChain* createSwapChain();
 	DeviceContext* getImmediateDeviceContext();
 	VertexBuffer* createVertexBuffer();

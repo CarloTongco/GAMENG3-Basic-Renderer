@@ -23,9 +23,6 @@ bool SwapChain::init(HWND hwnd, UINT width, UINT height)
 	desc.SampleDesc.Quality = 0;
 	desc.Windowed = TRUE;
 
-	//IDXGIFactory* dxFactory = GraphicsEngine::getInstance()->getDirectXFactory();
-	//HRESULT hr = dxFactory->CreateSwapChain(device, &desc, &this->m_swap_chain);
-
 	HRESULT hr = GraphicsEngine::get()->m_dxgi_factory->CreateSwapChain(device, &desc, &m_swap_chain);
 
 	if (FAILED(hr))
