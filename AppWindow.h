@@ -8,6 +8,7 @@
 #include "IndexBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+//#include "Cube.h"
 
 class AppWindow: public Window
 {
@@ -30,6 +31,8 @@ public:
 	void drawQuad(VertexBuffer* vb, ConstantBuffer* cb, VertexShader* vs, PixelShader* ps);
 	void drawTriangle(VertexBuffer* vb, ConstantBuffer* cb, VertexShader* vs, PixelShader* ps);
 	void drawIndexedTriangle(VertexBuffer* vb, IndexBuffer* ib, ConstantBuffer* cb, VertexShader* vs, PixelShader* ps);
+	void drawIndexedTriangle2(VertexBuffer* vb, IndexBuffer* ib, ConstantBuffer* cb, VertexShader* vs, PixelShader* ps);
+	void drawIndexedTriangle(VertexBuffer* vb, IndexBuffer* ib, VertexShader* vs, PixelShader* ps);
 	float modifySpeed();
 
 private:
@@ -43,6 +46,7 @@ private:
 	ConstantBuffer* m_cb2;
 	ConstantBuffer* m_cb3;
 	IndexBuffer* m_ib;
+	IndexBuffer* m_ib2;
 	VertexShader* m_vs;
 	VertexShader* m_vs2;
 	VertexShader* m_vs3;
