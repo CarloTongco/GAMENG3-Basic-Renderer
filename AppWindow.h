@@ -5,6 +5,7 @@
 #include "DeviceContext.h"
 #include "VertexBuffer.h"
 #include "ConstantBuffer.h"
+#include "IndexBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
@@ -16,6 +17,7 @@ public:
 
 	//AppWindow() = default;
 	AppWindow();
+	void updateQuadPosition();
 	~AppWindow();
 
 	// Inherited via Window
@@ -23,11 +25,11 @@ public:
 	virtual void onUpdate() override;
 	virtual void onDestroy() override;
 
-	void createGraphicsWindow();
 	void drawQuad(VertexBuffer* vb, VertexShader* vs, PixelShader* ps);
 	void drawTriangle(VertexBuffer* vb, VertexShader* vs, PixelShader* ps);
 	void drawQuad(VertexBuffer* vb, ConstantBuffer* cb, VertexShader* vs, PixelShader* ps);
 	void drawTriangle(VertexBuffer* vb, ConstantBuffer* cb, VertexShader* vs, PixelShader* ps);
+	void drawIndexedTriangle(VertexBuffer* vb, IndexBuffer* ib, ConstantBuffer* cb, VertexShader* vs, PixelShader* ps);
 	float modifySpeed();
 
 private:
@@ -40,6 +42,7 @@ private:
 	ConstantBuffer* m_cb;
 	ConstantBuffer* m_cb2;
 	ConstantBuffer* m_cb3;
+	IndexBuffer* m_ib;
 	VertexShader* m_vs;
 	VertexShader* m_vs2;
 	VertexShader* m_vs3;
@@ -52,9 +55,15 @@ private:
 	float speed = 0.0f;
 	float animSpeed = 0.5f;
 	float timer = 0.0f;
-	float m_delta_time = 0;
+	
 	float m_angle = 0;
 	bool speedup = false;
+
+	float m_old_delta = 0.0f;
+	float m_new_delta = 0.0f;
+	float m_delta_time = 0.0f;
+	float m_delta_pos = 0.0f;
+	float m_delta_scale = 0.0f;
 
 };
 
