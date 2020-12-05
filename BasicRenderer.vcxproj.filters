@@ -19,9 +19,6 @@
     <Filter Include="GameEngine\GraphicsEngine\DeviceContext">
       <UniqueIdentifier>{6c6c1f11-58cb-4015-b4ff-d3b5944ee726}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameEngine\VertexBuffer">
-      <UniqueIdentifier>{db151020-d6e2-423a-b1e8-e7ab52a3f74a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameEngine\GraphicsEngine\VertexShader">
       <UniqueIdentifier>{17c64345-d228-40f3-bf74-e59166d27bdf}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,12 @@
     </Filter>
     <Filter Include="GameEngine\GraphicsEngine\Primitives">
       <UniqueIdentifier>{41e9ca7d-0081-42d9-b206-a28e776e3bcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\InputSystem">
+      <UniqueIdentifier>{93f2639c-2130-490f-99f0-b815f7f958b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GraphicsEngine\VertexBuffer">
+      <UniqueIdentifier>{db151020-d6e2-423a-b1e8-e7ab52a3f74a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,7 +67,7 @@
       <Filter>GameEngine\GraphicsEngine\DeviceContext</Filter>
     </ClCompile>
     <ClCompile Include="VertexBuffer.cpp">
-      <Filter>GameEngine\VertexBuffer</Filter>
+      <Filter>GameEngine\GraphicsEngine\VertexBuffer</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>GameEngine\GraphicsEngine\VertexShader</Filter>
@@ -87,6 +90,9 @@
     <ClCompile Include="Cube.cpp">
       <Filter>GameEngine\GraphicsEngine\Primitives</Filter>
     </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>GameEngine\InputSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -105,7 +111,7 @@
       <Filter>GameEngine\GraphicsEngine\DeviceContext</Filter>
     </ClInclude>
     <ClInclude Include="VertexBuffer.h">
-      <Filter>GameEngine\VertexBuffer</Filter>
+      <Filter>GameEngine\GraphicsEngine\VertexBuffer</Filter>
     </ClInclude>
     <ClInclude Include="VertexShader.h">
       <Filter>GameEngine\GraphicsEngine\VertexShader</Filter>
@@ -133,6 +139,18 @@
     </ClInclude>
     <ClInclude Include="Cube.h">
       <Filter>GameEngine\GraphicsEngine\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>GameEngine\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="InputListener.h">
+      <Filter>GameEngine\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>GameEngine\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4D.h">
+      <Filter>GameEngine\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

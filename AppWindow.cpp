@@ -3,6 +3,7 @@
 #include "EngineTime.h"
 #include "Vector3D.h"
 #include "Matrix4x4.h"
+#include "InputSystem.h"
 
 struct vec3
 {
@@ -55,7 +56,7 @@ AppWindow::AppWindow()
 {
 }
 
-void AppWindow::updateQuadPosition()
+void AppWindow::update()
 {
 	constant cc;
 	cc.m_angle = ::GetTickCount();
@@ -75,29 +76,58 @@ void AppWindow::updateQuadPosition()
 
 	//cc.m_world *= temp;
 
-	cc.m_world.setScale(Vector3D(0.2, 0.2, 0.2));
-
+	//cc.m_world.setScale(Vector3D(0.2, 0.2, 0.2));
 
 	/*temp.setIdentity();
 	temp.setRotationZ(m_delta_scale);
 	cc.m_world *= temp;*/
 
-	temp.setIdentity();
+	/*temp.setIdentity();
 	temp.setRotationX(-0.2f);
-	cc.m_world *= temp;
+	cc.m_world *= temp;*/
+
+	/*temp.setIdentity();
+	temp.setRotationY(m_delta_scale);
+	cc.m_world *= temp;*/
 
 	/*temp.setIdentity();
 	temp.setRotationX(m_delta_scale);
 	cc.m_world *= temp;*/
 
-	cc.m_view.setIdentity();
-	cc.m_proj.setOrthoLH
+	//cc.m_view.setIdentity();
+
+	cc.m_world.setIdentity();
+
+	Matrix4x4 world_cam;
+	world_cam.setIdentity();
+
+	temp.setIdentity();
+	temp.setRotationX(m_rot_x);
+	world_cam *= temp;
+
+	temp.setIdentity();
+	temp.setRotationY(m_rot_y);
+	world_cam *= temp;
+
+	Vector3D new_pos = m_world_cam.getTranslation() + world_cam.getZDirection() * (m_forward * 0.1f);
+	new_pos = new_pos + world_cam.getXDirection() * (m_rightward * 0.1f);
+	world_cam.setTranslation(new_pos);
+	m_world_cam = world_cam;
+	world_cam.inverse();
+	cc.m_view = world_cam;
+
+	/*cc.m_proj.setOrthoLH
 	(
 		(this->getClientWindowRect().right - this->getClientWindowRect().left) / 400.0f,
 		(this->getClientWindowRect().bottom - this->getClientWindowRect().top) / 400.0f,
 		-4.0f,
 		4.0f
-	);
+	);*/
+
+	int width = (this->getClientWindowRect().right - this->getClientWindowRect().left);
+	int height = (this->getClientWindowRect().bottom - this->getClientWindowRect().top);
+
+	cc.m_proj.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
 
 	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
 }
@@ -109,6 +139,8 @@ AppWindow::~AppWindow()
 void AppWindow::onCreate()
 {
 	Window::onCreate();
+	InputSystem::get()->addListener(this);
+	InputSystem::get()->showCursor(false);
 	GraphicsEngine::get()->init();
 	m_swap_chain = GraphicsEngine::get()->createSwapChain();
 
@@ -236,12 +268,6 @@ void AppWindow::onCreate()
 		1, 0, 7,
 	};
 
-	/*m_vb2 = GraphicsEngine::get()->createVertexBuffer();
-	UINT size_list2 = ARRAYSIZE(list2);
-
-	m_vb3 = GraphicsEngine::get()->createVertexBuffer();
-	UINT size_list3 = ARRAYSIZE(list3);*/
-
 	m_ib = GraphicsEngine::get()->createIndexBuffer();
 	UINT size_index_list1 = ARRAYSIZE(index_list);
 
@@ -262,16 +288,11 @@ void AppWindow::onCreate()
 	m_vb->load(vertex_list1, sizeof(vertex), size_list1, shader_byte_code, size_shader);
 	m_vs2 = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
 	m_vb2->load(vertex_list2, sizeof(vertex), size_list2, shader_byte_code, size_shader);
-	/*m_vs2 = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
-	m_vb2->load(list2, sizeof(vertex), size_list2, shader_byte_code, size_shader);
-	m_vs3 = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
-	m_vb3->load(list3, sizeof(vertex), size_list3, shader_byte_code, size_shader);*/
 	GraphicsEngine::get()->releaseCompiledShader();
 
 	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
 	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
 	m_ps2 = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
-	//m_ps3 = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
 	GraphicsEngine::get()->releaseCompiledShader();
 
 	constant cbData = {};
@@ -286,6 +307,7 @@ void AppWindow::onCreate()
 void AppWindow::onUpdate()
 {
 	Window::onUpdate();
+	InputSystem::get()->update();
 	//this->ticks += EngineTime::getDeltaTime() * 1.0f;
 
 	//animSpeed = modifySpeed();
@@ -296,7 +318,8 @@ void AppWindow::onUpdate()
 	RECT rc = this->getClientWindowRect();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
 
-	updateQuadPosition();
+	update();
+	//updateQuadPosition();
 
 	/*constant cbData = {};
 	cbData.m_angle = this->ticks;*/
@@ -337,19 +360,26 @@ void AppWindow::onDestroy()
 	m_vb->release();
 	m_ib->release();
 	m_cb->release();
-	//m_vb2->release();
-	//m_ib2->release();
-	//m_cb2->release();
-	//m_vb3->release();
+	m_vb2->release();
+	m_ib2->release();
+	m_cb2->release();
 	m_swap_chain->release();
 	m_vs->release();
-	//m_vs2->release();
-	//m_vs3->release();
+	m_vs2->release();
 	m_ps->release();
-	//m_ps2->release();
-	//m_ps3->release();
+	m_ps2->release();
 	GraphicsEngine::get()->release();
 	//GraphicsEngine::destroy();
+}
+
+void AppWindow::onFocus()
+{
+	InputSystem::get()->addListener(this);
+}
+
+void AppWindow::onKillFocus()
+{
+	InputSystem::get()->removeListener(this);
 }
 
 void AppWindow::drawQuad(VertexBuffer* vb, VertexShader* vs, PixelShader* ps)
@@ -489,4 +519,65 @@ float AppWindow::modifySpeed()
 	std::cout << "Current speed: " << this->speed << "\n";
 
 	return speed;
+}
+
+void AppWindow::onKeyDown(int key)
+{
+	if (key == 'W')
+	{
+		//m_rot_x += 3.14f*m_delta_time;
+		m_forward = 1.0f;
+	}
+	else if (key == 'S')
+	{
+		//m_rot_x -= 3.14f*m_delta_time;
+		m_forward = -1.0f;
+	}
+	else if (key == 'A')
+	{
+		//m_rot_y += 3.14f*m_delta_time;
+		m_rightward = -1.0f;
+	}
+	else if (key == 'D')
+	{
+		//m_rot_y -= 3.14f*m_delta_time;
+		m_rightward = 1.0f;
+	}
+}
+
+void AppWindow::onKeyUp(int key)
+{
+	m_forward = 0.0f;
+	m_rightward = 0.0f;
+}
+
+void AppWindow::onMouseMove(const Point& mouse_pos)
+{
+	int width = (this->getClientWindowRect().right - this->getClientWindowRect().left);
+	int height = (this->getClientWindowRect().bottom - this->getClientWindowRect().top);
+
+	m_rot_x += (mouse_pos.m_y - (height / 2.0f)) * m_delta_time * 0.1f;
+	m_rot_y += (mouse_pos.m_x - (width / 2.0f)) * m_delta_time * 0.1f;
+
+	InputSystem::get()->setCursorPosition(Point((int)(width / 2.0f), (int)(height / 2.0f)));
+}
+
+void AppWindow::onLeftMouseDown(const Point& mouse_pos)
+{
+	m_scale_cube = 0.5f;
+}
+
+void AppWindow::onLeftMouseUp(const Point& mouse_pos)
+{
+	m_scale_cube = 1.0f;
+}
+
+void AppWindow::onRightMouseDown(const Point& mouse_pos)
+{
+	m_scale_cube = 2.0f;
+}
+
+void AppWindow::onRightMouseUp(const Point& mouse_pos)
+{
+	m_scale_cube = 1.0f;
 }
